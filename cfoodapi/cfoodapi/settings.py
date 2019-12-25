@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'cfoodapi.urls'
@@ -149,7 +150,9 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ALLOW_CREDENTIALS = True
 
 JWT_AUTH = {
-    'JWT_RESPONSE_PAYLOAD_HANDLER':   'authapi.utils.custom_jwt_response_handler'
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'authapi.utils.custom_jwt_response_handler',
+    'JWT_VERIFY_EXPIRATION': False,
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
 LOGIN_URL = 'login'
