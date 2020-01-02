@@ -75,9 +75,7 @@ WSGI_APPLICATION = 'cfoodapi.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    """'default': {
+"""'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cfood',
         'USER': 'postgres',
@@ -85,6 +83,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }, """
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'd6n9m5j370der9',
