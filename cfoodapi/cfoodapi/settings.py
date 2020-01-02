@@ -9,12 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
 import os
-
-import django_heroku
-
-django_heroku.settings(locals())
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -82,12 +77,20 @@ WSGI_APPLICATION = 'cfoodapi.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    """'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cfood',
         'USER': 'postgres',
         'PASSWORD': 'root',
         'HOST': 'localhost',
+        'PORT': '5432',
+    }, """
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd6n9m5j370der9',
+        'USER': 'nucmukuzbbgwym',
+        'PASSWORD': 'a5cccdd562222e54bbce463c136614b21a4e54ab2d567afa232cf5b53be20095',
+        'HOST': 'ec2-107-21-97-5.compute-1.amazonaws.com',
         'PORT': '5432',
     },
     'test': {
@@ -149,6 +152,7 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
+    'https://appcfood.netlify.com'
 )
 
 CORS_ALLOW_CREDENTIALS = True

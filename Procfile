@@ -1,1 +1,1 @@
-web: gunicorn cfoodapi.cfoodapi.wsgi
+web: gunicorn cfoodapi.wsgi --pythonpath=cfoodapi --log-file -
