@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c1od11nzpx@f9jt4$3!*=+byw$rgu-d$nocd$-d-)5&(n1l)z8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['appcfood.herokuapp.com', 'localhost', '127.0.0.1']
 
