@@ -24,7 +24,7 @@ SECRET_KEY = 'c1od11nzpx@f9jt4$3!*=+byw$rgu-d$nocd$-d-)5&(n1l)z8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://appcfood.herokuapp.com"]
 
 
 # Application definition
@@ -151,8 +151,7 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-    'https://appcfood.netlify.com',
-    'https://appcfood.herokuapp.com'
+    'https://appcfood.netlify.com'
 )
 
 CORS_ALLOW_CREDENTIALS = True
