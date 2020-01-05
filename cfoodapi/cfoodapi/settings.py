@@ -16,7 +16,7 @@ except:
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['appcfood.herokuapp.com', 'localhost', '127.0.0.1']
 
@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'authapi'
+    'authapi',
+    'api'
 ]
 
 MIDDLEWARE = [
