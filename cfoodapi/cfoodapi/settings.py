@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 import os
-from pathlib import Path
 
 from django_heroku import dj_database_url
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 try:
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'corsheaders',
     'authapi',
     'api'
@@ -108,6 +109,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'cfoodapi.pagination.Pagination'
 }
 
 CORS_ORIGIN_WHITELIST = (
