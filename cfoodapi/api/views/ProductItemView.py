@@ -3,21 +3,19 @@ from rest_framework.permissions import IsAuthenticated
 
 from api.serializers import ProductItemSerializer
 from api.models import ProductItem
-from api.base import RetrieveUpdateDestroyAPIView, NumberInFilter, BaseFilter, TYPES
+from api.base import RetrieveUpdateDestroyAPIView, NumberInFilter, BaseFilter, FilterType
 
 from rest_framework import filters
 from django_filters import rest_framework as field_filters
 
 
 class BaseProductItemFilter:
-    id = TYPES["number"]
+    id = FilterType.NUMBER
+    name = FilterType.TEXT
+    created_at = FilterType.DATE
 
 
 class ProductItemFilter(field_filters.FilterSet):
-    id_max = field_filters.NumberFilter(field_name="id", lookup_expr='lte')
-    id_min = field_filters.NumberFilter(field_name="id", lookup_expr='gte')
-    #ids = NumberInFilter(field_name='id', lookup_expr='in')
-
     class Meta:
         model = ProductItem
         fields = ['id']

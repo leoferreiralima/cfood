@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 from rest_framework import serializers, mixins, generics, pagination
-from django_filters import BaseInFilter, NumberFilter
+from django_filters import BaseInFilter, NumberFilter, CharFilter, BaseRangeFilter, DateFilter
 from django_filters import rest_framework as field_filters
 
 
@@ -62,12 +62,61 @@ class NumberInFilter(BaseInFilter, NumberFilter):
     pass
 
 
-TYPES = {
-    'number': "NUMBER"
-}
+class NumberRangeFilter(BaseRangeFilter, NumberFilter):
+    pass
+
+
+class CharInFilter(BaseInFilter, CharFilter):
+    pass
+
+
+class DateRangeFilter(BaseRangeFilter, DateFilter):
+    pass
+
+
+class FilterType:
+    NUMBER = (
+        {"lookup": "exact", "name": "%s", "filter": field_filters.NumberFilter},
+        {"lookup": "in", "name": "%s_in", "filter": NumberInFilter},
+        {"lookup": "gt", "name": "%s_gt", "filter": field_filters.NumberFilter},
+        {"lookup": "gte", "name": "%s_gte", "filter": field_filters.NumberFilter},
+        {"lookup": "lt", "name": "%s_lt", "filter": field_filters.NumberFilter},
+        {"lookup": "lte", "name": "%s_lte", "filter": field_filters.NumberFilter},
+        {"lookup": "range", "name": "%s_between", "filter": NumberRangeFilter}
+    )
+    TEXT = (
+        {"lookup": "exact", "name": "%s", "filter": field_filters.CharFilter},
+        {"lookup": "iexact", "name": "i%s", "filter": field_filters.CharFilter},
+        {"lookup": "contains", "name": "%s_like",
+            "filter": field_filters.CharFilter},
+        {"lookup": "icontains", "name": "%s_ilike",
+            "filter": field_filters.CharFilter},
+        {"lookup": "in", "name": "%s_in", "filter": CharInFilter},
+        {"lookup": "startswith", "name": "%s_start",
+            "filter": field_filters.CharFilter},
+        {"lookup": "istartswith", "name": "%s_istart",
+            "filter": field_filters.CharFilter},
+        {"lookup": "endswith", "name": "%s_end",
+            "filter": field_filters.CharFilter},
+        {"lookup": "iendswith", "name": "%s_iend",
+            "filter": field_filters.CharFilter}
+    )
+    DATE = (
+        {"lookup": "date", "name": "%s", "filter": field_filters.DateFilter},
+        {"lookup": "date__gt", "name": "%s_gt",
+            "filter": field_filters.DateFilter},
+        {"lookup": "date__gte", "name": "%s_gte", "filter": field_filters.DateFilter},
+        {"lookup": "date__lt", "name": "%s_lt", "filter": field_filters.DateFilter},
+        {"lookup": "date__lte", "name": "%s_lte", "filter": field_filters.DateFilter},
+        {"lookup": "date__range", "name": "%s_between", "filter": DateRangeFilter}
+    )
+
+    BOOOLEAN = ({"lookup": "exact", "name": "%s"})
 
 
 class BaseFilter:
+
+    FILTERS = {}
 
     def __init__(self, base_class, filter_class):
         self.base_class = base_class
@@ -76,20 +125,17 @@ class BaseFilter:
     def to_class(self):
         base = self.base_class()
 
-        filters = {}
+        attributes = {}
 
         variables = [i for i in dir(base) if not i.startswith('__')]
         for v in variables:
-            value = getattr(base, v)
+            filters = getattr(base, v)
+            for f in filters:
+                name = f["name"] % v
+                lookup = f["lookup"]
+                Filter = f["filter"]
 
-            if (value == TYPES["number"]):
-                filters[v] = field_filters.NumberFilter(
-                    field_name=v, lookup_expr='exact')
-                filters["%s_max" % v] = field_filters.NumberFilter(
-                    field_name=v, lookup_expr='lte')
-                filters["%s_min" % v] = field_filters.NumberFilter(
-                    field_name=v, lookup_expr='gte')
-                filters["%s_in" % v] = NumberInFilter(
-                    field_name=v, lookup_expr='in')
+                attributes[name] = Filter(
+                    field_name=v, lookup_expr=lookup)
 
-        return type("Custom_%s" % base.__class__.__name__, (self.filter_class,), filters)
+        return type("Custom_%s" % base.__class__.__name__, (self.filter_class,), attributes)
